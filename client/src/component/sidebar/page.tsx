@@ -3,12 +3,22 @@ import Link from "next/link";
 import logo from "../../../public/images/Logo.png";
 import React from "react";
 import { usePathname } from "next/navigation"; // ✅ CORRECT FOR APP ROUTER
+import { useRouter } from "next/navigation";
 
 export default function Sidebar({ isOpen, closeSidebar }: { isOpen: boolean, closeSidebar: () => void })  {
   const pathname = usePathname(); // ✅ Get the current path
 
   const isActive = (path: string) => pathname === path;
+  const router = useRouter();
 
+  const handleLogout = () => {
+
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+
+    // Redirect to home/login page
+    router.push("/");
+  };
   return (
   <aside className={`bg-white p-4 fixed top-[93px]  z-40 h-full w-64 transition-transform duration-300 ease-in-out flex flex-col lg:gap-y-80 gap-y-48
       ${isOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0`}>
@@ -33,7 +43,7 @@ export default function Sidebar({ isOpen, closeSidebar }: { isOpen: boolean, clo
           </button>
         </Link>
 
-        <button className="bg-[#E68120] text-white font-medium  py-4 px-15 rounded-xl lg:hidden">
+        <button onClick={handleLogout} className="bg-[#E68120] text-white font-medium  py-4 px-15 rounded-xl lg:hidden">
           LogOut
         </button>
       </div>

@@ -1,19 +1,30 @@
 "use client";
 import { useState, useEffect } from "react";
 import Image from "next/image";
-import Link from "next/link";
 import MainNavbar from "../../component/mainNavbar/page";
-import galleryone from "../../../public/images/galleryone.png";
-import gallerytwo from "../../../public/images/gallerytwo.png";
-import gallerythree from "../../../public/images/gallerythree.png";
-import galleryfour from "../../../public/images/galleryfour.png";
-import galleryfive from "../../../public/images/galleryfive.png";
-export default function maingallery() {
-    return (
-        <>
 
-            <MainNavbar />
-            <section className="bg-[#eff9eb] py-20">
+import { apiClient } from "@/src/utlis/apiClinet";
+export default function maingallery() {
+  const [galleryImages, setGalleryImages] = useState<any[]>([]);
+  const fetchGalleryImages = async () => {
+    try {
+      const res = await apiClient("/gallery");
+      if (res.success) {
+        setGalleryImages(res.data);
+      } else {
+        console.error("Failed to load gallery");
+      }
+    } catch (err) {
+      console.error("Error fetching gallery:", err);
+    }
+  };
+  useEffect(() => {
+    fetchGalleryImages();
+  }, []);
+  return (
+    <>
+      <MainNavbar />
+      <section className="bg-[#eff9eb] py-20">
         <div className="container">
           <div className="">
             <h1 className="font-semibold text-4xl md:mb-8 mb-4 tracking-wide text-[#595858]">
@@ -21,10 +32,13 @@ export default function maingallery() {
             </h1>
           </div>
           <div className="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-2 justify-items-center ">
-            {[galleryone, gallerythree, gallerytwo, galleryfour, galleryfive, galleryone].map((img, index) => (
-              <div key={index} className="lg:w-[450px] w-[350px] lg:h-[390px] h-[290px] overflow-hidden">
+            {galleryImages.map((item, index) => (
+              <div
+                key={item._id || index}
+                className="lg:w-[450px] w-[350px] lg:h-[390px] h-[290px] overflow-hidden"
+              >
                 <Image
-                  src={img}
+                  src={item.image.url}
                   alt={`gallery-${index}`}
                   width={405}
                   height={270}
@@ -40,6 +54,6 @@ export default function maingallery() {
           </div>
         </div>
       </section>
-        </>
-    )
+    </>
+  );
 }
