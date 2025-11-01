@@ -10,7 +10,7 @@ require("dotenv").config();
 const authRoutes = require("./routes/auth");
 const galleryRoutes = require("./routes/gallery");
 const serviceRoutes = require("./routes/services");
-
+const contactRoutes = require("./routes/contact");
 // Import error handling middleware
 const { errorHandler } = require("./middleware/errorHandler");
 
@@ -65,7 +65,7 @@ mongoose
 app.use("/api/auth", authRoutes);
 app.use("/api/gallery", galleryRoutes);
 app.use("/api/services", serviceRoutes);
-
+app.use("/api/contact", contactRoutes);
 // Health check endpoint
 app.get("/api/health", (req, res) => {
   res.status(200).json({

@@ -214,3 +214,67 @@ exports.changePassword = async (req, res) => {
     res.status(500).json({ success: false, message: 'Server error' });
   }
 };
+// @desc    Create new user (Super Admin only)
+// @route   POST /api/auth/create-user
+// @access  Private (Super Admin)
+exports.createUser = async (req, res) => {
+  try {
+    const { name, email, password } = req.body;
+
+    // Check if requester is super admin
+    if (req.user.role !== 'superadmin') {
+      return res.status(403).json({
+        success: false,
+        message: 'Access denied. Super admin only.',
+      });
+    }
+
+    // Validate required fields
+    if (!name || !email || !password) {
+      return res.status(400).json({
+        success: false,
+        message: 'Please provide name, email, and password',
+      });
+    }
+
+    // Check if user already exists
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return res.status(400).json({
+        success: false,
+        message: 'User with this email already exists',
+      });
+    }
+
+    // Create new user
+    const user = await User.create({
+      name,
+      email,
+      password,
+      role: 'admin', // Default role for created users
+    });
+
+    res.status(201).json({
+      success: true,
+      message: 'User created successfully',
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+      },
+    });
+  } catch (error) {
+    if (error.code === 11000) {
+      return res.status(400).json({
+        success: false,
+        message: 'Email already exists',
+      });
+    }
+
+    res.status(500).json({
+      success: false,
+      message: 'Server error',
+    });
+  }
+};

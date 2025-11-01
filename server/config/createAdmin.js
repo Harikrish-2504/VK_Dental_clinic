@@ -12,13 +12,12 @@ const createAdminUser = async () => {
         name: "Admin",
         email: process.env.ADMIN_EMAIL,
         password: process.env.ADMIN_PASSWORD, // plain text
-        role: "admin",
+        role: "superadmin",
       });
 
       await admin.save();
       console.log("Admin user created successfully");
       console.log(`Email: ${process.env.ADMIN_EMAIL}`);
-      console.log(`Password: ${process.env.ADMIN_PASSWORD}`);
     } else {
       console.log("Admin user already exists");
     }
