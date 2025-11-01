@@ -1,126 +1,488 @@
+// "use client";
+// import { useState } from "react";
+// import { IoMdClose } from "react-icons/io";
+// import Image from "next/image";
+// import { toast } from "react-hot-toast"; // ✅ For styled toast messages
+// import logo from "../../../../public/images/Logo.png";
+// import { apiClient } from "@/src/utlis/apiClinet";
+
+// export default function PasswordAndEmail() {
+//   const [showForm, setShowForm] = useState(false);
+//   const [oldEmail, setOldEmail] = useState("");
+//   const [oldPassword, setOldPassword] = useState("");
+//   const [newEmail, setNewEmail] = useState("");
+//   const [newPassword, setNewPassword] = useState("");
+//   const [loading, setLoading] = useState(false);
+
+//   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+//     e.preventDefault();
+
+//     try {
+//       setLoading(true);
+//       const response = await apiClient(`/auth/update-credentials`, {
+//         method: "PUT",
+//         body: JSON.stringify({
+//           oldEmail,
+//           oldPassword,
+//           newEmail,
+//           newPassword,
+//         }),
+//       });
+
+//       const data = await response.json();
+//       setLoading(false);
+
+//       if (response.ok) {
+//         toast.success("Email and Password updated successfully");
+//         setShowForm(false);
+//         setOldEmail("");
+//         setOldPassword("");
+//         setNewEmail("");
+//         setNewPassword("");
+//       } else {
+//         toast.error(data.message || "Failed to update credentials");
+//       }
+//     } catch (error) {
+//       console.error(error);
+//       setLoading(false);
+//       toast.error("Server error. Try again later.");
+//     }
+//   };
+
+//   return (
+//     <div className="lg:ml-60 px-4 relative">
+//       <div className="flex justify-end my-6">
+//         <button
+//           className="bg-[#44BBEE] text-white font-medium lg:text-lg text-sm py-3 px-7 rounded-xl"
+//           onClick={() => setShowForm(true)}
+//         >
+//           Change Password & Email
+//         </button>
+//       </div>
+
+//       <div className="px-4 h-[calc(100vh-100px)] flex flex-col justify-center items-center gap-5">
+//         <h1 className="text-4xl font-semibold text-[#E68120]">
+//           fffffffffffffffff
+//         </h1>
+//         <p className="text-2xl font-medium text-[#44BBEE]">VKV Dental Clinic</p>
+//       </div>
+
+//       {showForm && (
+//         <form
+//           onSubmit={handleSubmit}
+//           className="mt-4 py-10 px-12 rounded-2xl bg-white shadow-lg absolute lg:top-40 lg:left-72 md:left-24 top-2 left-0 lg:w-1/2 md:w-3/4 w-full flex flex-col gap-3"
+//         >
+//           <button
+//             type="button"
+//             onClick={() => setShowForm(false)}
+//             className="absolute top-2 right-2 text-gray-500"
+//           >
+//             <span className="text-2xl">
+//               <IoMdClose />
+//             </span>
+//           </button>
+
+//           <h2 className="text-xl font-semibold text-[#E68120] mb-2">
+//             Update Credentials
+//           </h2>
+
+//           <div className="mb-4">
+//             <label className="block mb-1 text-[#ce7b00] font-medium">
+//               Old Email
+//             </label>
+//             <input
+//               type="email"
+//               className="w-full px-4 py-3 border border-[#aca9a9] rounded-xl text-sm"
+//               value={oldEmail}
+//               onChange={(e) => setOldEmail(e.target.value)}
+//               placeholder="Enter old email"
+//               required
+//             />
+//           </div>
+
+//           <div className="mb-4">
+//             <label className="block mb-1 text-[#ce7b00] font-medium">
+//               Old Password
+//             </label>
+//             <input
+//               type="password"
+//               className="w-full px-4 py-3 border border-[#aca9a9] rounded-xl text-sm"
+//               value={oldPassword}
+//               onChange={(e) => setOldPassword(e.target.value)}
+//               placeholder="Enter old password"
+//               required
+//             />
+//           </div>
+
+//           <div className="mb-4">
+//             <label className="block mb-1 text-[#ce7b00] font-medium">
+//               New Email
+//             </label>
+//             <input
+//               type="email"
+//               className="w-full px-4 py-3 border border-[#aca9a9] rounded-xl text-sm"
+//               value={newEmail}
+//               onChange={(e) => setNewEmail(e.target.value)}
+//               placeholder="Enter new email"
+//               required
+//             />
+//           </div>
+
+//           <div className="mb-4">
+//             <label className="block mb-1 text-[#ce7b00] font-medium">
+//               New Password
+//             </label>
+//             <input
+//               type="password"
+//               className="w-full px-4 py-3 border border-[#aca9a9] rounded-xl text-sm"
+//               value={newPassword}
+//               onChange={(e) => setNewPassword(e.target.value)}
+//               placeholder="Enter new password"
+//               required
+//             />
+//           </div>
+
+//           <div className="text-center">
+//             <button
+//               type="submit"
+//               disabled={loading}
+//               className="bg-[#18a000] text-white px-6 py-2 rounded-md disabled:opacity-70"
+//             >
+//               {loading ? "Updating..." : "Submit"}
+//             </button>
+//           </div>
+//         </form>
+//       )}
+//     </div>
+//   );
+// }
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { IoMdClose } from "react-icons/io";
-import logo from "../../../../public/images/Logo.png";
-import Image from "next/image";
+import { toast } from "react-hot-toast";
+import { apiClient } from "@/src/utlis/apiClinet";
+
 export default function PasswordAndEmail() {
-    const [showForm, setShowForm] = useState(false); // State to toggle form visibility
-    const [email, setEmail] = useState(""); // State to store new email
-    const [password, setPassword] = useState(""); // State to store new password
+  const [showChangeCredentialsForm, setShowChangeCredentialsForm] =
+    useState(false);
+  const [showCreateUserForm, setShowCreateUserForm] = useState(false);
+  const [userRole, setUserRole] = useState("");
 
-    const handleChangeClick = () => {
-        setShowForm(true); // Show form when button is clicked
-    };
+  // Change Credentials State
+  const [oldEmail, setOldEmail] = useState("");
+  const [oldPassword, setOldPassword] = useState("");
+  const [newEmail, setNewEmail] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [loadingChange, setLoadingChange] = useState(false);
 
-    const handleCloseClick = () => {
-        setShowForm(false); // Close form
-    };
+  // Create User State
+  const [userName, setUserName] = useState("");
+  const [userEmail, setUserEmail] = useState("");
+  const [userPassword, setUserPassword] = useState("");
+  const [loadingCreate, setLoadingCreate] = useState(false);
 
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        console.log("Updated Email:", email);
-        console.log("Updated Password:", password);
-        // Add your form submission logic here
-        setEmail("");
-        setPassword("");
-        setShowForm(false); // Close form after submission
-    };
+  useEffect(() => {
+    // Get user role from localStorage
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      try {
+        const user = JSON.parse(storedUser);
+        setUserRole(user.role);
+      } catch (error) {
+        console.error("Failed to parse user data:", error);
+      }
+    }
+  }, []);
 
-    return (
-        <div className="lg:ml-60 px-4 relative">
-            <div className="flex justify-end my-6">
-                <button
-                    className="bg-[#44BBEE] text-white font-medium lg:text-lg text-sm py-3 px-7 rounded-xl"
-                    onClick={handleChangeClick}
-                >
-                    Change Password & Email
-                </button>
+  const handleChangeCredentials = async (
+    e: React.FormEvent<HTMLFormElement>
+  ) => {
+    e.preventDefault();
+
+    try {
+      setLoadingChange(true);
+      const response = await apiClient(`/auth/update-credentials`, {
+        method: "PUT",
+        body: JSON.stringify({
+          oldEmail,
+          oldPassword,
+          newEmail,
+          newPassword,
+        }),
+      });
+
+      setLoadingChange(false);
+
+      if (response.success) {
+        toast.success("Email and Password updated successfully");
+        setShowChangeCredentialsForm(false);
+        // Reset form
+        setOldEmail("");
+        setOldPassword("");
+        setNewEmail("");
+        setNewPassword("");
+
+        // Update localStorage with new email
+        const storedUser = localStorage.getItem("user");
+        if (storedUser) {
+          const user = JSON.parse(storedUser);
+          user.email = newEmail;
+          localStorage.setItem("user", JSON.stringify(user));
+        }
+      } else {
+        toast.error(response.message || "Failed to update credentials");
+      }
+    } catch (error) {
+      console.error(error);
+      setLoadingChange(false);
+      toast.error("Server error. Try again later.");
+    }
+  };
+
+  const handleCreateUser = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    try {
+      setLoadingCreate(true);
+      const response = await apiClient(`/auth/create-user`, {
+        method: "POST",
+        body: JSON.stringify({
+          name: userName,
+          email: userEmail,
+          password: userPassword,
+        }),
+      });
+
+      setLoadingCreate(false);
+
+      if (response.success) {
+        toast.success("User created successfully");
+        setShowCreateUserForm(false);
+        // Reset form
+        setUserName("");
+        setUserEmail("");
+        setUserPassword("");
+      } else {
+        toast.error(response.message || "Failed to create user");
+      }
+    } catch (error) {
+      console.error(error);
+      setLoadingCreate(false);
+      toast.error("Server error. Try again later.");
+    }
+  };
+
+  return (
+    <div className="lg:ml-60 px-4 relative min-h-screen">
+      {/* Action Buttons */}
+      <div className="flex justify-end gap-4 my-6 flex-wrap">
+        <button
+          className="bg-[#44BBEE] text-white font-medium lg:text-lg text-sm py-3 px-7 rounded-xl hover:bg-[#3aa5d8] transition-colors"
+          onClick={() => setShowChangeCredentialsForm(true)}
+        >
+          Change Password & Email
+        </button>
+
+        {userRole === "superadmin" && (
+          <button
+            className="bg-[#E68120] text-white font-medium lg:text-lg text-sm py-3 px-7 rounded-xl hover:bg-[#d17316] transition-colors"
+            onClick={() => setShowCreateUserForm(true)}
+          >
+            Create New User
+          </button>
+        )}
+      </div>
+
+      {/* Welcome Section */}
+      <div className="px-4 h-[calc(100vh-150px)] flex flex-col justify-center items-center gap-5">
+        <h1 className="text-4xl font-semibold text-[#E68120] text-center">
+          Welcome to Admin Panel
+        </h1>
+        <p className="text-2xl font-medium text-[#44BBEE]">VKV Dental Clinic</p>
+      </div>
+
+      {/* Change Credentials Modal */}
+      {showChangeCredentialsForm && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <form
+            onSubmit={handleChangeCredentials}
+            className="bg-white rounded-2xl shadow-2xl w-full max-w-md p-8 relative max-h-[90vh] overflow-y-auto"
+          >
+            <button
+              type="button"
+              onClick={() => setShowChangeCredentialsForm(false)}
+              className="absolute top-4 right-4 text-gray-500 hover:text-gray-700 transition-colors"
+            >
+              <IoMdClose className="text-2xl" />
+            </button>
+
+            <h2 className="text-2xl font-semibold text-[#E68120] mb-6">
+              Update Credentials
+            </h2>
+
+            <div className="space-y-4">
+              <div>
+                <label className="block mb-2 text-[#ce7b00] font-medium text-sm">
+                  Old Email
+                </label>
+                <input
+                  type="email"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#E68120] focus:border-transparent"
+                  value={oldEmail}
+                  onChange={(e) => setOldEmail(e.target.value)}
+                  placeholder="Enter old email"
+                  required
+                />
+              </div>
+
+              <div>
+                <label className="block mb-2 text-[#ce7b00] font-medium text-sm">
+                  Old Password
+                </label>
+                <input
+                  type="password"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#E68120] focus:border-transparent"
+                  value={oldPassword}
+                  onChange={(e) => setOldPassword(e.target.value)}
+                  placeholder="Enter old password"
+                  required
+                />
+              </div>
+
+              <div>
+                <label className="block mb-2 text-[#ce7b00] font-medium text-sm">
+                  New Email
+                </label>
+                <input
+                  type="email"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#E68120] focus:border-transparent"
+                  value={newEmail}
+                  onChange={(e) => setNewEmail(e.target.value)}
+                  placeholder="Enter new email"
+                  required
+                />
+              </div>
+
+              <div>
+                <label className="block mb-2 text-[#ce7b00] font-medium text-sm">
+                  New Password
+                </label>
+                <input
+                  type="password"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#E68120] focus:border-transparent"
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
+                  placeholder="Enter new password"
+                  required
+                  minLength={6}
+                />
+              </div>
             </div>
-            {/* Button to open the form */}
-            <div className="  px-4 h-[calc(100vh-300px)] flex flex-col  justify-center items-center gap-5">
-                
-                <h1 className="text-4xl font-semibold text-[#E68120]">Dr.abcdefg hijk</h1>
-                <p className="text-2xl font-medium text-[#44BBEE]">VKV Dental Clinic</p>
 
+            <div className="flex gap-3 mt-6">
+              <button
+                type="button"
+                onClick={() => setShowChangeCredentialsForm(false)}
+                className="flex-1 bg-gray-300 text-gray-700 px-6 py-3 rounded-xl font-medium hover:bg-gray-400 transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                disabled={loadingChange}
+                className="flex-1 bg-[#18a000] text-white px-6 py-3 rounded-xl font-medium disabled:opacity-70 disabled:cursor-not-allowed hover:bg-[#159000] transition-colors"
+              >
+                {loadingChange ? "Updating..." : "Update"}
+              </button>
             </div>
-
-            {/* Form to change email and password */}
-            {showForm && (
-                <form
-                    onSubmit={handleSubmit}
-                    className="mt-4  py-10 px-12 rounded-2xl bg-white  shadow-lg absolute lg:top-40 lg:left-72 md:left-24 top-2 left-0 lg:w-1/2 md:w-3/4 w-full flex flex-col gap-3" // Add relative here
-                >
-                    {/* Close button */}
-                    <button
-                        type="button"
-                        onClick={handleCloseClick}
-                        className="absolute top-2 right-2 text-gray-500"
-                    >
-                        <span className="text-2xl">
-                            <IoMdClose />
-                        </span>
-                    </button>
-
-                    {/* Email input */}
-                    <div className="mb-4">
-                        <label className="block mb-1 text-[#ce7b00] font-medium">Name</label>
-                        <input
-                            type="name"
-                            className="w-full px-4 py-3 border border-[#aca9a9] rounded-xl text-sm"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            placeholder="Enter new name"
-                            required
-                        />
-                    </div>
-                    <div className="mb-4">
-                        <label className="block mb-1 text-[#ce7b00] font-medium">Serivce</label>
-                        <input
-                            type="service"
-                            className="w-full px-4 py-3 border border-[#aca9a9] rounded-xl text-sm"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            placeholder="Enter new service"
-                            required
-                        />
-                    </div>
-                    <div className="mb-4">
-                        <label className="block mb-1 text-[#ce7b00] font-medium">New Email</label>
-                        <input
-                            type="email"
-                            className="w-full px-4 py-3 border border-[#aca9a9] rounded-xl text-sm"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            placeholder="Enter new email"
-                            required
-                        />
-                    </div>
-
-
-                    {/* Password input */}
-                    <div className="mb-4">
-                        <label className="block mb-1 text-[#ce7b00] font-medium">New Password</label>
-                        <input
-                            type="password"
-                            className="w-full px-4 py-3 border border-[#aca9a9] rounded-xl text-sm"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            placeholder="Enter new Password"
-                            required
-                        />
-                    </div>
-
-                    {/* Submit button */}
-                    <div className="text-center">
-                        <button
-                            type="submit"
-                            className="bg-[#18a000] text-white px-6 py-2 rounded-md"
-                        >
-                            Submit
-                        </button>
-                    </div>
-                </form>
-            )}
+          </form>
         </div>
-    );
+      )}
+
+      {/* Create User Modal (Super Admin Only) */}
+      {showCreateUserForm && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <form
+            onSubmit={handleCreateUser}
+            className="bg-white rounded-2xl shadow-2xl w-full max-w-md p-8 relative"
+          >
+            <button
+              type="button"
+              onClick={() => setShowCreateUserForm(false)}
+              className="absolute top-4 right-4 text-gray-500 hover:text-gray-700 transition-colors"
+            >
+              <IoMdClose className="text-2xl" />
+            </button>
+
+            <h2 className="text-2xl font-semibold text-[#E68120] mb-6">
+              Create New User
+            </h2>
+
+            <div className="space-y-4">
+              <div>
+                <label className="block mb-2 text-[#ce7b00] font-medium text-sm">
+                  Name
+                </label>
+                <input
+                  type="text"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#E68120] focus:border-transparent"
+                  value={userName}
+                  onChange={(e) => setUserName(e.target.value)}
+                  placeholder="Enter user name"
+                  required
+                  maxLength={50}
+                />
+              </div>
+
+              <div>
+                <label className="block mb-2 text-[#ce7b00] font-medium text-sm">
+                  Email
+                </label>
+                <input
+                  type="email"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#E68120] focus:border-transparent"
+                  value={userEmail}
+                  onChange={(e) => setUserEmail(e.target.value)}
+                  placeholder="Enter user email"
+                  required
+                />
+              </div>
+
+              <div>
+                <label className="block mb-2 text-[#ce7b00] font-medium text-sm">
+                  Password
+                </label>
+                <input
+                  type="password"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#E68120] focus:border-transparent"
+                  value={userPassword}
+                  onChange={(e) => setUserPassword(e.target.value)}
+                  placeholder="Enter password"
+                  required
+                  minLength={6}
+                />
+              </div>
+            </div>
+
+            <div className="flex gap-3 mt-6">
+              <button
+                type="button"
+                onClick={() => setShowCreateUserForm(false)}
+                className="flex-1 bg-gray-300 text-gray-700 px-6 py-3 rounded-xl font-medium hover:bg-gray-400 transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                disabled={loadingCreate}
+                className="flex-1 bg-[#18a000] text-white px-6 py-3 rounded-xl font-medium disabled:opacity-70 disabled:cursor-not-allowed hover:bg-[#159000] transition-colors"
+              >
+                {loadingCreate ? "Creating..." : "Create User"}
+              </button>
+            </div>
+          </form>
+        </div>
+      )}
+    </div>
+  );
 }

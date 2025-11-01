@@ -4,6 +4,7 @@ import Link from "next/link";
 import logo from "../../../public/images/Logo.png";
 import { FiMenu, FiX } from "react-icons/fi";
 import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 export default function Navbar({
   toggleSidebar,
   isSidebarOpen,
@@ -16,8 +17,7 @@ export default function Navbar({
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
-
-    // Redirect to home/login page
+    toast.success("Logged out successfully!");
     router.push("/");
   };
   return (

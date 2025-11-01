@@ -8,6 +8,7 @@ import teeth from "../../../public/images/teeth.png";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { apiClient } from "@/src/utlis/apiClinet";
+import toast from "react-hot-toast";
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -27,7 +28,7 @@ export default function Login() {
 
       localStorage.setItem("token", res.token);
       localStorage.setItem("user", JSON.stringify(res.user));
-      alert("Login successful!");
+      toast.success("Login successful!");
       router.push("/pannel"); // or wherever
     } catch (err: any) {
       alert(err.message || "Login failed");

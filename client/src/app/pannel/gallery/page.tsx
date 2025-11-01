@@ -62,36 +62,45 @@ export default function Gallery() {
     e.preventDefault();
 
     if (!imageFile) {
-      alert("Please select an image");
+      alert("⚠️ Please select an image before uploading.");
       return;
     }
 
+    // ✅ 1. Get token from localStorage
+    const token = localStorage.getItem("token");
+    if (!token) {
+      alert("⚠️ You must be logged in to upload an image.");
+      return;
+    }
+
+    // ✅ 2. Prepare FormData
     const formData = new FormData();
     formData.append("image", imageFile);
 
     try {
-      const res = await fetch("http://localhost:5000/api/gallery", {
+      // ✅ 3. Use BASE_URL from env
+      const res = await fetch(`http://localhost:5000/api/gallery`, {
         method: "POST",
         headers: {
-          Authorization:
-            "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4ODMzZDFkYjViOTg0YjEyZTA3NmMwOCIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc1MzQzMjk5MywiZXhwIjoxNzU2MDI0OTkzfQ.leCJYbT4nN8Z1eM-5czXySUluw4sMY-G_uyRgA0cNqM",
+          Authorization: `Bearer ${token}`, // ✅ dynamic token
         },
-        body: formData,
+        body: formData, // ✅ FormData handles content-type automatically
       });
 
+      // ✅ 4. Parse response
       const data = await res.json();
 
       if (res.ok) {
-        alert("Image uploaded successfully!");
+        alert("✅ Image uploaded successfully!");
         setShowForm(false);
         setImageFile(null);
         fetchGalleryImages();
       } else {
-        alert(data.message || "Upload failed");
+        alert(`❌ ${data.message || "Upload failed"}`);
       }
     } catch (err) {
-      console.error("Error uploading:", err);
-      alert("Server error");
+      console.error("❌ Error uploading:", err);
+      alert("⚠️ Server error — please try again later.");
     }
   };
 

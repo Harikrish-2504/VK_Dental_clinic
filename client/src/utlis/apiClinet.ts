@@ -7,10 +7,11 @@ export const apiClient = async (
   includeAuth: boolean = true
 ) => {
   const token = includeAuth ? localStorage.getItem("token") : null;
-
+  const isFormData = options.body instanceof FormData;
   const headers: HeadersInit = {
     "Content-Type": "application/json",
     ...(includeAuth && token ? { Authorization: `Bearer ${token}` } : {}),
+    ...(isFormData ? {} : { "Content-Type": "application/json" }), // ✅ skip for FormData
   };
 
   const config: RequestInit = {

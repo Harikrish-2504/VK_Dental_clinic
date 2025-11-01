@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import MainNavbar from "../../component/mainNavbar/page";
 import { IoArrowForwardCircle } from "react-icons/io5";
 import { apiClient } from "@/src/utlis/apiClinet";
@@ -23,7 +24,7 @@ export default function mainservice() {
       console.error("Error fetching services:", err);
     }
   };
-
+  const [expandedIndex, setExpandedIndex] = useState<number | null>(null);
   return (
     <>
       <MainNavbar />
@@ -52,24 +53,38 @@ export default function mainservice() {
               linked to serious conditions like diabetes and high blood{" "}
             </p>
           </div> */}
-          {services.map((service) => (
-            <div
-              key={service._id}
-              className="bg-[#fff] shadow-xl p-6 rounded-2xl"
-            >
-              <div className="flex justify-between items-center mb-4">
-                <h1 className="font-semibold text-lg md:text-xl tracking-wide">
-                  {service.title}
-                </h1>
-                <span className="text-[#0792CE] md:text-4xl text-2xl">
-                  <IoArrowForwardCircle />
-                </span>
-              </div>
-              <p className="max-w-[260px] tracking-wide font-normal text-md">
+          {services.map((service, index) => {
+            const words = service.description.split(" ");
+            const isLong = words.length > 25;
+            const shortText = words.slice(0, 25).join(" ") + "...";
+            const isExpanded = expandedIndex === index;
+            return (
+              <div
+                key={service._id}
+                className="bg-[#fff] shadow-xl p-6 rounded-2xl"
+              >
+                <div className="flex justify-between items-center mb-4">
+                  <h1 className="font-semibold text-lg md:text-xl tracking-wide">
+                    {service.title}
+                  </h1>
+                  <Link
+                    key={service._id}
+                    href={`/mainservice/${service._id}`} // ✅ dynamic route
+                  >
+                    <span className="text-[#0792CE] md:text-4xl text-2xl">
+                      <IoArrowForwardCircle />
+                    </span>
+                  </Link>
+                </div>
+                {/* <p className="max-w-[260px] tracking-wide font-normal text-md">
                 {service.description}
-              </p>
-            </div>
-          ))}
+              </p> */}
+                <p className="max-w-[260px] tracking-wide font-normal text-md whitespace-pre-line">
+                  {service.description}
+                </p>
+              </div>
+            );
+          })}
         </div>
       </div>
     </>

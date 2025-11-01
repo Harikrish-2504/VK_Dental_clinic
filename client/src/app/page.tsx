@@ -1,27 +1,14 @@
 "use client";
 import { useState, useEffect } from "react";
 import Image from "next/image";
-import Link from "next/link";
 import logo from "../../public/images/Logo.png";
-import { MdArrowOutward } from "react-icons/md";
 import { MdOutlineLocationOn } from "react-icons/md";
 import { FiPhoneCall, FiPhone } from "react-icons/fi";
 import heroimg from "../../public/images/heroimg.png";
-import consult from "../../public/images/consult.png";
-import stethoscope from "../../public/images/stethoscope.png";
-import rating from "../../public/images/rating.png";
-import equipment from "../../public/images/equipment.png";
 import { FaRegCalendarCheck, FaRegSquarePlus } from "react-icons/fa6";
 import aboutus from "../../public/images/aboutus.png";
-import { IoArrowForwardCircle } from "react-icons/io5";
 import { BsArrowLeftCircle, BsArrowRightCircle } from "react-icons/bs";
-import galleryone from "../../public/images/galleryone.png";
-import gallerytwo from "../../public/images/gallerytwo.png";
-import gallerythree from "../../public/images/gallerythree.png";
-import galleryfour from "../../public/images/galleryfour.png";
-import galleryfive from "../../public/images/galleryfive.png";
 import testimonial from "../../public/images/testimonial.png";
-import consultation from "../../public/images/consultation.png";
 import { FaFacebook, FaTwitter, FaInstagram } from "react-icons/fa";
 import MainNavbar from "../component/mainNavbar/page";
 import InitialLoader from "../component/initialloader/page";
@@ -29,6 +16,7 @@ import AOS from "aos";
 import "aos/dist/aos.css";
 import GallerySection from "../component/Gallery/page";
 import Services from "../component/Services/page";
+import ConsultationForm from "../component/ConsultationForm/page";
 export default function Home() {
   const [activeSection, setActiveSection] = useState("home");
 
@@ -218,37 +206,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* <section className="bg-[#F5F5F5] py-20" >
-        <div className="container">
-          <div className="grid lg:grid-cols-4 md:grid-cols-2 grid-cols-1 justify-items-center ">
-            <div className="bg-[#fff] shadow-xl px-6 py-8 max-w-fit flex flex-col gap-3 rounded-2xl">
-              <Image src={consult} width={85} height={85} alt="" />
-              <h2 className="text-[#000] text-lg font-bold tracking-wide">Free  Consultation</h2>
-              <p className="font-normal text-[#000] text-sm max-w-[260px]">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna
-                aliqua ut enim ad minim veniam, quis nostrud.</p>
-            </div>
-            <div className="bg-[#fff] shadow-xl px-6 py-8 max-w-fit flex flex-col gap-3 rounded-2xl">
-              <Image src={stethoscope} width={85} height={85} alt="" />
-              <h2 className="text-[#000] text-lg font-bold tracking-wide">Expert  Dentist</h2>
-              <p className="font-normal text-[#000] text-sm max-w-[260px]">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna
-                aliqua ut enim ad minim veniam, quis nostrud.</p>
-            </div>
-            <div className="bg-[#fff] shadow-xl px-6 py-8 max-w-fit flex flex-col gap-3 rounded-2xl">
-              <Image src={rating} width={85} height={85} alt="" />
-              <h2 className="text-[#000] text-lg font-bold tracking-wide">Higher User Rating</h2>
-              <p className="font-normal text-[#000] text-sm max-w-[260px]">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna
-                aliqua ut enim ad minim veniam, quis nostrud.</p>
-            </div>
-            <div className="bg-[#fff] shadow-xl px-6 py-8 max-w-fit flex flex-col gap-3 rounded-2xl">
-              <Image src={equipment} width={85} height={85} alt="" />
-              <h2 className="text-[#000] text-lg font-bold tracking-wide">Best  Equipmnet</h2>
-              <p className="font-normal text-[#000] text-sm max-w-[260px]">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna
-                aliqua ut enim ad minim veniam, quis nostrud.</p>
-            </div>
-          </div>
-        </div>
-      </section> */}
-
       <GallerySection />
       <section className="py-20" id="testimonial">
         <div className="container">
@@ -292,53 +249,7 @@ export default function Home() {
           </div>
         </div>
       </section>
-      <section className="bg-[#eff9eb] py-20 " id="Consultation">
-        <div className="container">
-          <div className="flex md:flex-row flex-col justify-center items-center ">
-            <Image
-              src={consultation}
-              width={455}
-              height={50}
-              alt=""
-              className="shadow-xl/20 rounded-l-[50px] lg:block hidden"
-            />
-            <div className="bg-[#fff] md:py-24 py-14 px-10 lg:rounded-r-[50px] shadow-xl/20 rounded-2xl">
-              <h1 className="font-semibold text-2xl mb-8 text-center">
-                Get a Consultation
-              </h1>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <input
-                  type="text"
-                  placeholder="Fullname*"
-                  className="py-3 border-[1px] border-[#D1D1D1] rounded-xl text-sm pl-2 "
-                />
-                <input
-                  type="text"
-                  placeholder="I’m interested in*"
-                  className="py-3 border-[1px] border-[#D1D1D1]  rounded-xl text-sm pl-2"
-                />
-
-                <input
-                  type="text"
-                  placeholder="Email*"
-                  className="py-3 border-[1px] border-[#D1D1D1]  rounded-xl text-sm pl-2"
-                />
-                <input
-                  type="text"
-                  placeholder="Number"
-                  className="py-3 border-[1px] border-[#D1D1D1]  rounded-xl text-sm pl-2"
-                />
-              </div>
-              <div className=" flex justify-center items-center  bg-[#E68120] mt-8 text-center rounded-3xl">
-                <button className="flex justify-center items-center  text-[#1E1E1E] font-medium text-lg py-4 ">
-                  Submit
-                  <MdArrowOutward className="text-2xl ml-2" />
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      <ConsultationForm />
       <footer className="bg-[#eff9eb] ">
         <div className="border border-[#0792CE] w-full"></div>
         <div className="container">
