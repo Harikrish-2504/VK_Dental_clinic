@@ -25,7 +25,7 @@ function GallerySection() {
     <section className="bg-[#eff9eb] py-20">
       <div className="container">
         <div className="">
-          <h1 className="font-semibold text-4xl md:mb-8 mb-4 tracking-wide text-[#595858]">
+          <h1 className="font-semibold text-4xl md:mb-8 mb-4 tracking-wide text-[#000]">
             Gallery
           </h1>
         </div>

@@ -1,61 +1,112 @@
 "use client";
 import Link from "next/link";
-import logo from "../../../public/images/Logo.png";
-import React from "react";
-import { usePathname } from "next/navigation"; // ✅ CORRECT FOR APP ROUTER
-import { useRouter } from "next/navigation";
+import React, { useState } from "react";
+import { usePathname, useRouter } from "next/navigation";
 
-export default function Sidebar({ isOpen, closeSidebar }: { isOpen: boolean, closeSidebar: () => void })  {
-  const pathname = usePathname(); // ✅ Get the current path
+export default function Sidebar({
+  isOpen,
+  closeSidebar,
+}: {
+  isOpen: boolean;
+  closeSidebar: () => void;
+}) {
+  const pathname = usePathname();
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
 
   const isActive = (path: string) => pathname === path;
-  const router = useRouter();
+
+  const handleNavigation = (path: string) => {
+    setIsLoading(true);
+    closeSidebar();
+    setTimeout(() => {
+      router.push(path);
+      setIsLoading(false);
+    }, 800);
+  };
 
   const handleLogout = () => {
-
+    setIsLoading(true);
     localStorage.removeItem("token");
     localStorage.removeItem("user");
-
-    // Redirect to home/login page
-    router.push("/");
+    setTimeout(() => {
+      setIsLoading(false);
+      router.push("/");
+    }, 1500);
   };
-  return (
-  <aside className={`bg-white p-4 fixed top-[93px]  z-40 h-full w-64 transition-transform duration-300 ease-in-out flex flex-col lg:gap-y-80 gap-y-48
-      ${isOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0`}>
-  {/* Adjust 'top' based on navbar height */}
 
-      <div className="flex flex-col gap-5 justify-center items-center pt-8">
-        <Link href="/pannel/gallery" onClick={closeSidebar}>
+  return (
+    <>
+      {/* Fullscreen orange loader */}
+      {isLoading && (
+        <div className="fixed inset-0 bg-white/70 flex items-center justify-center z-[9999]">
+          <div className="w-10 h-10 border-4 border-[#E68120] border-t-transparent rounded-full animate-spin"></div>
+        </div>
+      )}
+
+      <aside
+        className={`bg-white p-4 fixed top-[93px] z-40 h-full w-64 transition-transform duration-300 ease-in-out flex flex-col lg:gap-y-80 gap-y-48 ${
+          isOpen ? "translate-x-0" : "-translate-x-full"
+        } lg:translate-x-0`}
+      >
+        <div className="flex flex-col gap-5 justify-center items-center pt-8">
           <button
-            className={`${isActive("/pannel/gallery") ? "bg-[#A45D19]" : "bg-[#E68120]"
-              } text-white py-4 px-15 rounded-xl font-medium`}
+            onClick={() => handleNavigation("/pannel/gallery")}
+            className={`${
+              isActive("/pannel/gallery") ? "bg-[#A45D19]" : "bg-[#E68120]"
+            } text-white py-4 px-15 rounded-xl font-medium w-full`}
           >
             Gallery
           </button>
-        </Link>
 
-        <Link href="/pannel/service" onClick={closeSidebar}>
           <button
-            className={`${isActive("/pannel/service") ? "bg-[#A45D19]" : "bg-[#E68120]"
-              } text-white py-4 px-15 rounded-xl font-medium`}
+            onClick={() => handleNavigation("/pannel/service")}
+            className={`${
+              isActive("/pannel/service") ? "bg-[#A45D19]" : "bg-[#E68120]"
+            } text-white py-4 px-15 rounded-xl font-medium w-full`}
           >
             Service
           </button>
-        </Link>
 
-        <button onClick={handleLogout} className="bg-[#E68120] text-white font-medium  py-4 px-15 rounded-xl lg:hidden">
-          LogOut
-        </button>
-      </div>
-
-      <Link href="/pannel/passwordandemail" onClick={closeSidebar}>
-        <button   className={`${isActive("/pannel/passwordandemail") ? "text-[#ed634b]" : "text-[#e5c329]"
-              }   font-semibold`}
+          <button
+            onClick={() => handleNavigation("/pannel/testimonial")}
+            className={`${
+              isActive("/pannel/testimonial") ? "bg-[#A45D19]" : "bg-[#E68120]"
+            } text-white py-4 px-15 rounded-xl font-medium w-full`}
           >
+            Testimonial
+          </button>
+
+          {/* Logout */}
+          <button
+            onClick={handleLogout}
+            disabled={isLoading}
+            className={`bg-[#E68120] text-white font-medium py-4 px-15 rounded-xl lg:hidden flex items-center justify-center gap-2 transition-all duration-300 ${
+              isLoading ? "opacity-70 cursor-not-allowed" : "hover:bg-[#cf6c13]"
+            }`}
+          >
+            {isLoading ? (
+              <>
+                <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+                Logging out...
+              </>
+            ) : (
+              "LogOut"
+            )}
+          </button>
+        </div>
+
+        <button
+          onClick={() => handleNavigation("/pannel/passwordandemail")}
+          className={`${
+            isActive("/pannel/passwordandemail")
+              ? "text-[#ed634b]"
+              : "text-[#e5c329]"
+          } font-semibold`}
+        >
           Change Password and Email?
         </button>
-      </Link>
-      
-    </aside>
+      </aside>
+    </>
   );
 }

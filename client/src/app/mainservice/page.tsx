@@ -4,6 +4,7 @@ import Link from "next/link";
 import MainNavbar from "../../component/mainNavbar/page";
 import { IoArrowForwardCircle } from "react-icons/io5";
 import { apiClient } from "@/src/utlis/apiClinet";
+import Footer from "@/src/component/Footer/page";
 interface ServiceData {
   _id: string;
   title: string;
@@ -87,6 +88,7 @@ export default function mainservice() {
           })}
         </div>
       </div>
+      <Footer/>
     </>
   );
 }
