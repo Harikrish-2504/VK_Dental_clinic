@@ -1,13 +1,43 @@
 "use client";
 
-import { useState } from "react";
+import { useState ,useEffect} from "react";
 import Image from "next/image";
 import { MdArrowOutward } from "react-icons/md";
 import consultation from "../../../public/images/consultation.png"; // adjust path if needed
 import { apiClient } from "@/src/utlis/apiClinet";
 import toast from "react-hot-toast";
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 export default function ConsultationForm() {
+  useEffect(() => {
+    AOS.init({
+      duration: 1000,
+      once: false,
+      easing: "ease-in-out",
+    });
+
+    
+
+    
+  }, []);
+
+
+  useEffect(() => {
+    AOS.init({
+      duration: 1000,
+      once: false, // ✅ allow repeating
+      easing: "ease-in-out",
+    });
+
+    // 👇 Important: refresh on scroll ensures it keeps detecting
+    const handleScroll = () => AOS.refresh();
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+
+
   const [form, setForm] = useState({
     name: "",
     details: "",
@@ -57,7 +87,7 @@ export default function ConsultationForm() {
   };
 
   return (
-    <section className="bg-[#eff9eb] py-20" id="Consultation">
+    <section className="bg-[#eff9eb] py-20" id="Consultation" data-aos="fade-up">
       <div className="container">
         <form
           onSubmit={handleSubmit}
@@ -70,7 +100,7 @@ export default function ConsultationForm() {
             alt="Consultation"
             className="shadow-xl/20 rounded-l-[50px] lg:block hidden"
           />
-          <div className="bg-[#fff] md:py-24 py-14 px-10 lg:rounded-r-[50px] shadow-xl/20 rounded-2xl">
+          <div className="bg-[#fff] md:py-24 py-14 px-10 lg:rounded-r-[50px] shadow-xl/20 lg:rounded-none rounded-2xl">
             <h1 className="font-semibold text-2xl mb-8 text-center">
               Get a Consultation
             </h1>
@@ -89,7 +119,7 @@ export default function ConsultationForm() {
                 name="details"
                 value={form.details}
                 onChange={handleChange}
-                placeholder="I’m interested in*"
+                placeholder="Consult For*"
                 required
                 className="py-3 border border-[#D1D1D1] rounded-xl text-sm pl-2"
               />

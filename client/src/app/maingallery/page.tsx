@@ -4,6 +4,7 @@ import Image from "next/image";
 import MainNavbar from "../../component/mainNavbar/page";
 
 import { apiClient } from "@/src/utlis/apiClinet";
+import Footer from "@/src/component/Footer/page";
 export default function maingallery() {
   const [galleryImages, setGalleryImages] = useState<any[]>([]);
   const fetchGalleryImages = async () => {
@@ -54,6 +55,7 @@ export default function maingallery() {
           </div>
         </div>
       </section>
+      <Footer/>
     </>
   );
 }
