@@ -32,7 +32,7 @@ function Services() {
           <p className="text-lg text-[#89DB7B] font-semibold mb-3">
             Satisfy Solution
           </p>
-          <h2 className="text-3xl font-semibold tracking-wide leading-6">
+          <h2 className="lg:text-3xl text-xl font-semibold tracking-wide leading-6">
             The Best Dental Treatment
           </h2>
         </div>

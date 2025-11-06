@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import logo from "../../../public/images/Logo.png";
+import logo from "../../../public/images/logo.png";
 import { Menu, X } from "lucide-react";
 import { MdArrowOutward } from "react-icons/md"
 import { usePathname, useRouter } from 'next/navigation';
@@ -13,13 +13,29 @@ export default function mainNavbar() {
     const pathname = usePathname();
 
     useEffect(() => {
+        if (typeof window !== "undefined") {
+            const hash = window.location.hash;
+            if (hash) {
+                // Wait a moment so the page loads before scrolling
+                setTimeout(() => {
+                    const section = document.querySelector(hash);
+                    if (section) {
+                        section.scrollIntoView({ behavior: "smooth" });
+                    }
+                }, 500);
+            }
+        }
+    }, [pathname]);
+
+
+    useEffect(() => {
         const sections = document.querySelectorAll("section[id]");
         const observer = new IntersectionObserver(
             (entries) => {
                 const visibleSections = entries
                     .filter((entry) => entry.isIntersecting)
                     .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
-    
+
                 if (visibleSections.length > 0) {
                     setActiveSection(visibleSections[0].target.id);
                 } else {
@@ -29,12 +45,12 @@ export default function mainNavbar() {
             },
             { threshold: 0.6 }
         );
-    
+
         sections.forEach((section) => observer.observe(section));
-    
+
         return () => observer.disconnect();
     }, []);
-    
+
     const [loading, setLoading] = useState(false);
     const router = useRouter();
 
@@ -75,7 +91,7 @@ export default function mainNavbar() {
                     <div className="flex justify-between items-center h-16">
                         {/* Logo */}
                         <Link href="/">
-                            <Image src={logo} alt="Logo" width={180} height={50} />
+                            <Image src={logo} alt="Logo" width={180} height={50} className="w-34 lg:w-40 object-cover" />
                         </Link>
 
                         {/* Desktop Links */}
@@ -154,19 +170,48 @@ export default function mainNavbar() {
                             </button>
                             <nav className="flex flex-col space-y-6">
                                 <button >
-                                    <a href="#home" className="hover:text-[#E68120]" onClick={() => setIsOpen(false)}>Home</a>
+                                    <a href="/" className="hover:text-[#E68120]" onClick={() => setIsOpen(false)}>Home</a>
+                                </button>
+                                <button>
+                                    <Link
+                                        href="/#about"
+                                        onClick={() => {
+                                            setIsOpen(false);
+                                            router.push("/#about");
+                                        }}
+                                        className="hover:text-[#E68120]"
+                                    >
+                                        About Us
+                                    </Link>
                                 </button>
                                 <button >
-                                    <a href="#about" className="hover:text-[#E68120]" onClick={() => setIsOpen(false)}>About Us</a>
+                                    <a href="/mainservice" className="hover:text-[#E68120]" onClick={() => setIsOpen(false)}>Services</a>
                                 </button>
                                 <button >
-                                    <a href="#service" className="hover:text-[#E68120]" onClick={() => setIsOpen(false)}>Services</a>
+                                    <a href="/maingallery" className="hover:text-[#E68120]" onClick={() => setIsOpen(false)}>Gallery</a>
                                 </button>
-                                <button >
-                                    <a href="#testimonial" className="hover:text-[#E68120]" onClick={() => setIsOpen(false)}>Testimonial</a>
+                                <button>
+                                    <Link
+                                        href="/#testimonial"
+                                        onClick={() => {
+                                            setIsOpen(false);
+                                            router.push("/#testimonial");
+                                        }}
+                                        className="hover:text-[#E68120]"
+                                    >
+                                        Testimonial
+                                    </Link>
                                 </button>
-                                <button className="border-[1px] border-[#E68120]  text-[#000] px-6 py-2 rounded-[15px] text-[15px] font-medium hover:bg-[#0792CE] hover:text-[#fff] transition">
-                                  <a href="#Consultation" onClick={() => setIsOpen(false)}>  Contact Us </a>
+                                <button className="border-[1px] border-[#E68120] text-[#000] px-6 py-2 rounded-[15px] text-[15px] font-medium hover:bg-[#0792CE] hover:text-[#fff] transition">
+                                    <Link
+                                        href="/#Consultation"
+                                        onClick={() => {
+                                            setIsOpen(false);
+                                            router.push("/#Consultation");
+                                        }}
+                                    >
+                                        Contact Us
+                                    </Link>
                                 </button>
                             </nav>
                         </div>
