@@ -87,11 +87,11 @@ export default function ConsultationForm() {
   };
 
   return (
-    <section className="bg-[#eff9eb] py-20" id="Consultation" data-aos="fade-up">
+    <section className="bg-[#eff9eb] lg:py-20 py-10" id="Consultation" data-aos="fade-up">
       <div className="container">
         <form
           onSubmit={handleSubmit}
-          className="flex md:flex-row flex-col justify-center items-center"
+          className="flex md:flex-row flex-col justify-center lg:items-center"
         >
           <Image
             src={consultation}
@@ -100,7 +100,7 @@ export default function ConsultationForm() {
             alt="Consultation"
             className="shadow-xl/20 rounded-l-[50px] lg:block hidden"
           />
-          <div className="bg-[#fff] md:py-24 py-14 px-10 lg:rounded-r-[50px] shadow-xl/20 lg:rounded-none rounded-2xl">
+          <div className="bg-[#fff] md:py-24 py-10 px-5 lg:rounded-r-[50px] shadow-xl/20 lg:rounded-none rounded-2xl">
             <h1 className="font-semibold text-2xl mb-8 text-center">
               Get a Consultation
             </h1>
@@ -112,7 +112,7 @@ export default function ConsultationForm() {
                 onChange={handleChange}
                 placeholder="Fullname*"
                 required
-                className="py-3 border border-[#D1D1D1] rounded-xl text-sm pl-2"
+                className="py-3 border border-[#D1D1D1] rounded-xl text-sm pl-2 "
               />
               <input
                 type="text"
@@ -147,10 +147,10 @@ export default function ConsultationForm() {
               <button
                 type="submit"
                 disabled={loading}
-                className="flex justify-center items-center text-[#1E1E1E] font-medium text-lg py-4"
+                className="flex justify-center items-center text-[#1E1E1E] font-medium lg:text-lg text-sm lg:py-4 py-2"
               >
                 {loading ? "Sending..." : "Submit"}
-                {!loading && <MdArrowOutward className="text-2xl ml-2" />}
+                {!loading && <MdArrowOutward className="lg:text-2xl text-xl ml-2" />}
               </button>
             </div>
           </div>

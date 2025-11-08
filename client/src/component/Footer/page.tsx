@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import logo from "../../../public/images/Logo.png";
+import logo from "../../../public/images/logo.png";
 import { FaFacebook, FaTwitter, FaInstagram } from "react-icons/fa";
 import { MdArrowOutward } from "react-icons/md"
 export default function Footer() {
@@ -58,9 +58,9 @@ export default function Footer() {
                                                     <FaInstagram className="md:text-2xl text-lg" />
                                                 </a>
                                             </div>
-                                            
+
                                         </div>
-                                        
+
                                     </div>
                                     <div className="flex flex-col md:gap-4 gap-2 items-start ">
                                         <button className="font-medium text-sm md:text-lg text-[#070B00]">
@@ -73,16 +73,7 @@ export default function Footer() {
                                                 Home
                                             </a>
                                         </button>
-                                        <button className="font-medium text-sm md:text-lg text-[#070B00]">
-                                            {" "}
-                                            <a
-                                                href="/service"
-                                                className={`hover:text-[#E68120] ${activeSection === "service" ? "text-[#E68120] " : ""
-                                                    }`}
-                                            >
-                                                Services
-                                            </a>
-                                        </button>
+                                      
                                         <button className="font-medium text-sm md:text-lg text-[#070B00]">
                                             {" "}
                                             <a

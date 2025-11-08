@@ -50,7 +50,7 @@ export default function maingallery() {
           </div>
           <div className="flex justify-center items-center md:mt-20 mt-10">
             <button className="flex items-center gap-2 bg-[#E68120] text-white md:px-4 px-3 py-3 rounded-lg text-[10px] md:text-[15px]">
-              View More
+            Load More
             </button>
           </div>
         </div>
