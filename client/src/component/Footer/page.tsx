@@ -23,7 +23,7 @@ export default function Footer() {
                                 <div className="grid lg:grid-cols-3  grid-cols-1 lg:place-items-start items-center  md:gap-15 gap-10">
                                     <div className=" flex flex-col lg:items-center md:gap-10 gap-5">
                                         <Image
-                                            src="/images/logo.png"
+                                            src="/images/Logo.png"
                                             alt="Logo"
                                             width={250}
                                             height={50}

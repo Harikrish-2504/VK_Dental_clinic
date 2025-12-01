@@ -90,7 +90,7 @@ export default function mainNavbar() {
                     <div className="flex justify-between items-center h-16">
                         {/* Logo */}
                         <Link href="/">
-                            <Image src="/images/logo.png" alt="Logo" width={180} height={50} className="w-34 lg:w-40 object-cover" />
+                            <Image src="/images/Logo.png" alt="Logo" width={180} height={50} className="w-34 lg:w-40 object-cover" />
                         </Link>
 
                         {/* Desktop Links */}

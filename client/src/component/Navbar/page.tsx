@@ -36,7 +36,13 @@ export default function Navbar({
           </button>
 
           <Link href="/">
-            <Image src="/images/logo.png" alt="Logo" width={180} height={50} className="w-34 lg:w-40 object-cover"/>
+            <Image
+              src="/images/Logo.png"
+              alt="Logo"
+              width={180}
+              height={50}
+              className="w-34 lg:w-40 object-cover"
+            />
           </Link>
           <button
             onClick={handleLogout}

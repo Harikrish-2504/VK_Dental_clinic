@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   icons: {
     icon: [
       {
-        url: "/images/logo.png",
+        url: "/images/Logo.png",
         type: "image/png",
         sizes: "512x512",
       },
