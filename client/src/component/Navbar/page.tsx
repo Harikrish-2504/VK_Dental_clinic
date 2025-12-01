@@ -1,7 +1,6 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import logo from "../../../public/images/logo.png";
 import { FiMenu, FiX } from "react-icons/fi";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
@@ -37,7 +36,7 @@ export default function Navbar({
           </button>
 
           <Link href="/">
-            <Image src={logo} alt="Logo" width={180} height={50} className="w-34 lg:w-40 object-cover"/>
+            <Image src="/images/logo.png" alt="Logo" width={180} height={50} className="w-34 lg:w-40 object-cover"/>
           </Link>
           <button
             onClick={handleLogout}

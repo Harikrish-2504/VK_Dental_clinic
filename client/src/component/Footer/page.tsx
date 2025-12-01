@@ -1,8 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
 import Image from "next/image";
-import Link from "next/link";
-import logo from "../../../public/images/logo.png";
 import { FaFacebook, FaTwitter, FaInstagram } from "react-icons/fa";
 import { MdArrowOutward } from "react-icons/md"
 export default function Footer() {
@@ -25,7 +23,7 @@ export default function Footer() {
                                 <div className="grid lg:grid-cols-3  grid-cols-1 lg:place-items-start items-center  md:gap-15 gap-10">
                                     <div className=" flex flex-col lg:items-center md:gap-10 gap-5">
                                         <Image
-                                            src={logo}
+                                            src="/images/logo.png"
                                             alt="Logo"
                                             width={250}
                                             height={50}

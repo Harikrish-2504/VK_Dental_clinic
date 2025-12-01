@@ -14,7 +14,12 @@ const router = express.Router();
 router
   .route("/")
   .get(getAllGalleryPosts)
-  .post(protect, authorize("admin"), upload.single("image"), createGalleryPost);
+  .post(
+    protect,
+    authorize("superadmin", "admin"),
+    upload.single("image"),
+    createGalleryPost
+  );
 
 router
   .route("/:id")
