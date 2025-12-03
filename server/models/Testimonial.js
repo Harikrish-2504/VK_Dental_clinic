@@ -72,7 +72,7 @@ testimonialSchema.methods.toResponseJSON = function toResponseJSON(
 
   // only generate URL if a real filename exists
   if (testimonial.image && testimonial.image.filename) {
-    imageUrl = `${protocol}://${host}/backend/api/uploads/${testimonial.image.filename}`;
+    imageUrl = `${protocol}://${host}/backend/uploads/${testimonial.image.filename}`;
   }
   return {
     ...testimonial,

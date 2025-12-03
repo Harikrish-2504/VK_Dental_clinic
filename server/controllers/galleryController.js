@@ -72,7 +72,7 @@ exports.getAllGalleryPosts = async (req, res) => {
       ...post.toObject(),
       image: {
         ...post.image,
-        url: `${req.protocol}://${req.get("host")}/backend/api/uploads/${
+        url: `${req.protocol}://${req.get("host")}/backend/uploads/${
           post.image.filename
         }`,
       },
