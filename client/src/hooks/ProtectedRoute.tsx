@@ -17,7 +17,7 @@ export default function ProtectedRoute({
     const verifyUser = async () => {
       const token = localStorage.getItem("token");
       if (!token) {
-        router.replace("/login");
+        router.replace("/admin/login");
         return;
       }
 
@@ -28,7 +28,7 @@ export default function ProtectedRoute({
       } catch (err) {
         localStorage.removeItem("token");
         localStorage.removeItem("user");
-        router.replace("/login");
+        router.replace("/admin/login");
       }
     };
 

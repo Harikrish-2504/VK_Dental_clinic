@@ -77,6 +77,9 @@ export default function Service() {
     setEditingId(service._id);
     setShowForm(true);
   };
+  const trimText = (text: string, limit: number) => {
+    return text.length > limit ? text.substring(0, limit) + "..." : text;
+  };
 
   return (
     <div className="lg:ml-60 px-4 relative">
@@ -144,21 +147,6 @@ export default function Service() {
 
       {/* Grid displaying services */}
       <div className="grid lg:grid-cols-2 md:grid-cols-2 grid-cols-1 md:py-10 py-5 gap-8">
-        {/* <div className="bg-[#fff] shadow-xl py-8 px-6 rounded-2xl">
-          <div className="flex justify-between items-center mb-4">
-            <h1 className="font-medium text-lg md:text-2xl tracking-wide">
-              Teeth Clining
-            </h1>
-            <span className="text-[#FA0C0C] md:text-2xl text-xl">
-              <MdDelete />
-            </span>
-          </div>
-          <p className="max-w-[480px] tracking-wide font-normal text-sm">
-            We understand the impact that your oral health can have on the
-            well-being of your entire body. Diseases of the mouth have been
-            linked to serious conditions like diabetes and high blood pressure.
-          </p>
-        </div> */}
         {services.map((service) => (
           <div
             key={service._id}
@@ -172,13 +160,16 @@ export default function Service() {
                 <button onClick={() => handleEdit(service)} title="Edit">
                   <FaEdit className="text-blue-500 text-xl" />
                 </button>
-                <button onClick={() => handleDelete(service._id)} title="Delete">
+                <button
+                  onClick={() => handleDelete(service._id)}
+                  title="Delete"
+                >
                   <MdDelete className="text-red-500 text-xl" />
                 </button>
               </div>
             </div>
             <p className="max-w-[480px] tracking-wide font-normal text-sm">
-              {service.description}
+              {trimText(service.description, 250)}
             </p>
           </div>
         ))}

@@ -110,7 +110,7 @@ export default function mainNavbar() {
 
                             >
                                 <a
-                                    href="#about"
+                                    href="/#about"
                                     className="text-[#000] hover:text-[#E68120] "
 
                                 >About us</a>
@@ -137,7 +137,7 @@ export default function mainNavbar() {
 
                             >
                                 <a
-                                    href="#testimonial"
+                                    href="/#testimonial"
                                     className="text-[#000] hover:text-[#E68120]"
                                 >Testimonial</a>
                             </button>

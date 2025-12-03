@@ -12,6 +12,7 @@ interface ServiceData {
 }
 function Services() {
   const [services, setServices] = useState<ServiceData[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     fetchServices();
@@ -19,12 +20,38 @@ function Services() {
 
   const fetchServices = async () => {
     try {
+      setLoading(true);
       const res = await apiClient("/services");
-      setServices(res.data);
+      setServices(res.data || []);
     } catch (err) {
       console.error("Error fetching services:", err);
+    } finally {
+      setLoading(false);
     }
   };
+  const trimText = (text: string, limit: number) => {
+    return text.length > limit ? text.substring(0, limit) + "..." : text;
+  };
+
+  const SkeletonCard = () => (
+    <div className="bg-white shadow-xl p-6 rounded-2xl animate-pulse h-full">
+      {/* Title + Icon row */}
+      <div className="flex justify-between items-center mb-4">
+        {/* Fake title */}
+        <div className="h-6 w-32 bg-gray-200 rounded-md" />
+
+        {/* Fake icon */}
+        <div className="h-10 w-10 bg-gray-200 rounded-full" />
+      </div>
+
+      {/* Fake description (3 lines) */}
+      <div className="space-y-3">
+        <div className="h-4 w-full bg-gray-200 rounded-md" />
+        <div className="h-4 w-10/12 bg-gray-200 rounded-md" />
+        <div className="h-4 w-8/12 bg-gray-200 rounded-md" />
+      </div>
+    </div>
+  );
   return (
     <section className="bg-[#F5F5F5] py-20" id="service">
       <div className="container">
@@ -37,39 +64,28 @@ function Services() {
           </h2>
         </div>
         <div className="grid lg:grid-cols-4 md:grid-cols-2 grid-cols-1 md:py-10 py-5 gap-4">
-          {/* <div className="bg-[#fff] shadow-xl p-6 rounded-2xl">
-            <div className="flex justify-between items-center mb-4">
-              <h1 className="font-semibold text-lg md:text-xl tracking-wide">
-                Teeth Cleaning
-              </h1>
-              <span className="text-[#0792CE] md:text-4xl text-2xl">
-                <IoArrowForwardCircle />
-              </span>
-            </div>
-            <p className="max-w-[260px] tracking-wide font-normal text-md">
-              We understand theimpact that your oral health can have on the
-              well-being of your entire body. Diseases of the mouth have been
-              linked to serious conditions like diabetes and high blood{" "}
-            </p>
-          </div> */}
-          {services.slice(0, 4).map((service) => (
-            <div
-              key={service._id}
-              className="bg-[#fff] shadow-xl p-6 rounded-2xl"
-            >
-              <div className="flex justify-between items-center mb-4">
-                <h1 className="font-semibold text-lg md:text-xl tracking-wide">
-                  {service.title}
-                </h1>
-                <span className="text-[#0792CE] md:text-4xl text-2xl">
-                  <IoArrowForwardCircle />
-                </span>
-              </div>
-              <p className="max-w-[260px] tracking-wide font-normal text-md">
-                {service.description}
-              </p>
-            </div>
-          ))}
+          {loading
+            ? [1, 2, 3, 4].map((s) => <SkeletonCard key={s} />)
+            : services.slice(0, 4).map((service) => (
+                <div
+                  key={service._id}
+                  className="bg-[#fff] shadow-xl p-6 rounded-2xl"
+                >
+                  <div className="flex justify-between items-center mb-4">
+                    <h1 className="font-semibold text-lg md:text-xl tracking-wide">
+                      {service.title}
+                    </h1>
+                    <Link href="/mainservice">
+                      <span className="text-[#0792CE] md:text-4xl text-2xl">
+                        <IoArrowForwardCircle />
+                      </span>
+                    </Link>
+                  </div>
+                  <p className="max-w-[260px] tracking-wide font-normal text-md">
+                    {trimText(service.description, 225)}
+                  </p>
+                </div>
+              ))}
         </div>
         <div className="flex gap-4 justify-end">
           <Link href="/mainservice">

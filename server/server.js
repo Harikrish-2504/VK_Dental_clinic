@@ -9,6 +9,7 @@ require("dotenv").config();
 // Import routes
 const authRoutes = require("./routes/auth");
 const galleryRoutes = require("./routes/gallery");
+const testimonialRoutes = require("./routes/testimonials");
 const serviceRoutes = require("./routes/services");
 const contactRoutes = require("./routes/contact");
 // Import error handling middleware
@@ -22,7 +23,7 @@ app.use(helmet());
 // Rate limiting
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100, // limit each IP to 100 requests per windowMs
+  max: 200, // limit each IP to 200 requests per windowMs
   message: "Too many requests from this IP, please try again later.",
 });
 app.use(limiter);
@@ -32,7 +33,7 @@ app.use(
   cors({
     origin:
       process.env.NODE_ENV === "production"
-        ? ["https://yourdomain.com"]
+        ? ["https://vkvimplantclinic.com", "https://www.vkvimplantclinic.com"]
         : ["http://localhost:3000", "http://localhost:3001"],
     credentials: true,
   })
@@ -64,6 +65,7 @@ mongoose
 // Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/gallery", galleryRoutes);
+app.use("/api/testimonials", testimonialRoutes);
 app.use("/api/services", serviceRoutes);
 app.use("/api/contact", contactRoutes);
 // Health check endpoint

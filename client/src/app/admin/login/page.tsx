@@ -1,10 +1,10 @@
 "use client";
 
 import Image from "next/image";
-import vectorone from "../../../public/images/vectorone.png";
-import login from "../../../public/images/login.jpg";
-import vectortwo from "../../../public/images/vectortwo.png";
-import teeth from "../../../public/images/teeth.png";
+import vectorone from "../../../../public/images/vectorone.png";
+import login from "../../../../public/images/login.jpg";
+import vectortwo from "../../../../public/images/vectortwo.png";
+import teeth from "../../../../public/images/teeth.png";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { apiClient } from "@/src/utlis/apiClinet";

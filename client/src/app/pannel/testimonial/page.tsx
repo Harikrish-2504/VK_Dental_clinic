@@ -1,102 +1,228 @@
 "use client";
-import { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
-import testimonialImg from "../../../../public/images/testimonial.png";
+import testimonialImg from "../../../../public/images/defaultprofileimg.png";
+import { apiClient } from "@/src/utlis/apiClinet";
+
+interface TestimonialData {
+  _id: string;
+  name: string;
+  place: string;
+  comment: string;
+  image?: {
+    filename: string;
+    path: string;
+    mimetype: string;
+    size: number;
+    url?: string;
+  };
+}
 
 export default function Testimonial() {
   const [showForm, setShowForm] = useState(false);
+  const [testimonials, setTestimonials] = useState<TestimonialData[]>([]);
+  const [name, setName] = useState("");
+  const [place, setPlace] = useState("");
+  const [comment, setComment] = useState("");
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [preview, setPreview] = useState<string | null>(null);
+  const [editMode, setEditMode] = useState(false);
+  const [editingId, setEditingId] = useState<string | null>(null);
 
-  const testimonials = [
-    {
-      img: testimonialImg,
-      text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-      name: "David Gahan",
-      location: "Detroit, Michigan",
-    },
-    {
-      img: testimonialImg,
-      text: "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-      name: "Sarah Johnson",
-      location: "Los Angeles, California",
-    },
-    {
-      img: testimonialImg,
-      text: "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
-      name: "Michael Smith",
-      location: "New York, USA",
-    },
-  ];
+  useEffect(() => {
+    fetchTestimonials();
+  }, []);
+
+  useEffect(() => {
+    if (!imageFile) {
+      setPreview(null);
+      return;
+    }
+    const url = URL.createObjectURL(imageFile);
+    setPreview(url);
+    return () => URL.revokeObjectURL(url);
+  }, [imageFile]);
+
+  const fetchTestimonials = async () => {
+    try {
+      const res = await apiClient("/testimonials", { method: "GET" }, false);
+      // if apiClient throws on non-ok, this will be the JSON success response
+      setTestimonials(res.data || res);
+    } catch (err) {
+      console.error("Error fetching testimonials:", err);
+    }
+  };
+
+  const openAddForm = () => {
+    setEditMode(false);
+    setEditingId(null);
+    setName("");
+    setPlace("");
+    setComment("");
+    setImageFile(null);
+    setShowForm(true);
+  };
+
+  const handleClose = () => setShowForm(false);
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      setImageFile(e.target.files[0]);
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    try {
+      const form = new FormData();
+      form.append("name", name);
+      form.append("place", place);
+      form.append("comment", comment);
+      if (imageFile) form.append("image", imageFile);
+
+      if (editMode && editingId) {
+        const res = await apiClient(`/testimonials/${editingId}`, {
+          method: "PUT",
+          body: form,
+        });
+        if (res.success) {
+          fetchTestimonials();
+          setShowForm(false);
+        }
+      } else {
+        const res = await apiClient("/testimonials", {
+          method: "POST",
+          body: form,
+        });
+        if (res.success) {
+          fetchTestimonials();
+          setShowForm(false);
+        }
+      }
+    } catch (err) {
+      console.error("Error submitting testimonial:", err);
+    }
+  };
+
+  const handleDelete = async (id: string) => {
+    if (!confirm("Are you sure you want to delete this testimonial?")) return;
+    try {
+      const res = await apiClient(`/testimonials/${id}`, { method: "DELETE" });
+      if (res.success) fetchTestimonials();
+    } catch (err) {
+      console.error("Error deleting testimonial:", err);
+    }
+  };
+
+  const handleEdit = (item: TestimonialData) => {
+    setEditMode(true);
+    setEditingId(item._id);
+    setName(item.name || "");
+    setPlace(item.place || "");
+    setComment(item.comment || "");
+    setPreview(item.image?.url || null);
+    setImageFile(null);
+    setShowForm(true);
+  };
 
   return (
-    <section className="lg:ml-60 py-20" id="testimonial">
+    <section className="lg:ml-60 " id="testimonial">
       <div className="container">
-        <div className="text-center md:mb-15 mb-7">
-          <h4 className="text-md font-medium mb-3">Testimonials</h4>
-          <h1 className="md:text-3xl text-xl font-semibold">
-            What People Say About Us
-          </h1>
-        </div>
-
-        {/* Add Button */}
         <div className="flex justify-end lg:my-6">
           <button
-            onClick={() => setShowForm(true)}
+            onClick={openAddForm}
             className="bg-[#44BBEE] text-white font-medium md:text-lg text-sm py-3 md:px-7 px-4 rounded-xl"
           >
             ADD
           </button>
         </div>
 
-        {/* Testimonials Grid */}
         <div className="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 md:py-10 py-5 gap-8">
-          {testimonials.map((item, i) => (
+          {testimonials.map((item) => (
             <div
-              key={i}
-              className="flex flex-col items-center text-center p-6 shadow-md rounded-2xl hover:shadow-lg transition"
+              key={item._id}
+              className="flex flex-col items-center text-center p-6 shadow-md bg-white rounded-2xl hover:shadow-lg transition"
             >
-              <Image
-                src={item.img}
-                width={100}
-                height={100}
-                alt={item.name}
-                className="rounded-full mb-4 object-cover"
-              />
+              <div className="rounded-full mb-4 overflow-hidden w-[100px] h-[100px]">
+                <Image
+                  src={ item.image?.url || testimonialImg}
+                  alt={item.name}
+                  width={100}
+                  height={100}
+                  className="object-cover"
+                />
+              </div>
               <p className="text-sm md:text-base text-gray-700 mb-4 max-w-[350px]">
-                {item.text}
+                {item.comment}
               </p>
               <h2 className="font-semibold text-lg">{item.name}</h2>
-              <h3 className="text-sm text-gray-500">{item.location}</h3>
+              <h3 className="text-sm text-gray-500">{item.place}</h3>
+
+              <div className="flex gap-4 mt-4">
+                <button
+                  onClick={() => handleEdit(item)}
+                  className="text-blue-500"
+                >
+                  Edit
+                </button>
+                <button
+                  onClick={() => handleDelete(item._id)}
+                  className="text-red-500"
+                >
+                  Delete
+                </button>
+              </div>
             </div>
           ))}
         </div>
 
-        {/* Popup Form */}
         {showForm && (
           <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-[9999]">
-            <div className="bg-white p-6 rounded-2xl w-[90%] md:w-[400px] shadow-lg">
+            <div className="bg-white p-6 rounded-2xl w-[90%] md:w-[500px] shadow-lg">
               <h2 className="text-xl font-semibold mb-4 text-center">
-                Add Testimonial
+                {editMode ? "Edit Testimonial" : "Add Testimonial"}
               </h2>
 
-              <form className="flex flex-col gap-4">
-                <input
-                  type="file"
-                  accept="image/*"
-                  className="border rounded-lg p-2"
-                />
+              <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+                <div>
+                  <label className="block mb-1">Image</label>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleImageChange}
+                    className="border rounded-lg p-2 w-full"
+                  />
+                  {preview && (
+                    <img
+                      src={preview}
+                      alt="preview"
+                      className="mt-2 w-24 h-24 rounded-full object-cover"
+                    />
+                  )}
+                </div>
+
                 <textarea
+                  value={comment}
+                  onChange={(e) => setComment(e.target.value)}
                   name="text"
                   placeholder="Enter testimonial"
                   className="border rounded-lg p-2"
                   required
                 />
+
                 <input
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
                   name="name"
                   placeholder="Enter name"
                   className="border rounded-lg p-2"
                   required
                 />
+
                 <input
+                  value={place}
+                  onChange={(e) => setPlace(e.target.value)}
                   name="location"
                   placeholder="Enter Place"
                   className="border rounded-lg p-2"
@@ -106,7 +232,7 @@ export default function Testimonial() {
                 <div className="flex justify-between mt-3">
                   <button
                     type="button"
-                    onClick={() => setShowForm(false)}
+                    onClick={handleClose}
                     className="bg-gray-400 text-white px-4 py-2 rounded-lg"
                   >
                     Cancel

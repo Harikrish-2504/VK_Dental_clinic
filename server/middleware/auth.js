@@ -13,7 +13,6 @@ exports.protect = async (req, res, next) => {
     token = req.headers.authorization.split(" ")[1];
   }
 
-
   // Make sure token exists
   if (!token) {
     return res.status(401).json({
@@ -57,6 +56,9 @@ exports.protect = async (req, res, next) => {
 // Grant access to specific roles
 exports.authorize = (...roles) => {
   return (req, res, next) => {
+    if (req.user.role === "superadmin") {
+      return next();
+    }
     if (!roles.includes(req.user.role)) {
       return res.status(403).json({
         success: false,
