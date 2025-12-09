@@ -148,7 +148,7 @@ export default function Home() {
               <span>
                 <FiPhoneCall />
               </span>
-              <a href=""></a>+91 7907913968
+              <a href=""></a>+91 7907913968, +91 89211 24851
             </p>
             <div className="text-[#fff] text-md font-medium flex items-center gap-1">
               <span className="text-2xl">
@@ -244,7 +244,7 @@ export default function Home() {
                       Call us to book your appointment
                     </p>
                     <p className="text-center font-semibold text-[#0792CE] mb-3">
-                      +91 7907913968
+                      +91 7907913968, +91 8921124851
                     </p>
                     <a
                       href="tel:+919876543210"
