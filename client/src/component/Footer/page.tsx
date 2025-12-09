@@ -135,6 +135,9 @@ export default function Footer() {
                                             <p className="flex items-center  md:text-lg text-sm font-medium">
                                                 <a href="tel:+91 7907913968">+91 7907913968</a>
                                             </p>
+                                            <p className="flex items-center  md:text-lg text-sm font-medium">
+                                                <a href="tel:+91 8921124851">+91 8921124851</a>
+                                            </p>
                                             <p className="flex items-center md:text-lg text-sm font-medium">
                                                 <a href="mailto: vkvdentalimplant@gmail.com">
                                                     {" "}
