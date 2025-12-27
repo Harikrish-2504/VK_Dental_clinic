@@ -126,11 +126,10 @@ export const TestimonialSection = () => {
                   width={150}
                   height={150}
                   alt={current.name}
-                  className="rounded-full object-cover"
+                  className="rounded-full object-cover w-[150px] h-[150px]"
                 />
-
                 <p className="max-w-[650px] font-[500] md:text-lg text-sm text-center">
-                  {trimText(current.comment, 350)}
+                  {current?.comment}
                 </p>
 
                 <div>
