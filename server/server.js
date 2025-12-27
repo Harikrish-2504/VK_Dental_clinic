@@ -19,6 +19,7 @@ const app = express();
 
 // Security middleware
 app.use(helmet());
+app.set("trust proxy", true);
 
 // Rate limiting
 const limiter = rateLimit({

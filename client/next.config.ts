@@ -7,16 +7,16 @@ const nextConfig: NextConfig = {
         protocol: "http",
         hostname: "vkvimplantclinic.com",
         port: "",
-        pathname: "/backend/api/uploads/**",
+        pathname: "/backend/uploads/**", // Match any path under this
       },
       {
         protocol: "https",
         hostname: "vkvimplantclinic.com",
         port: "",
-        pathname: "/backend/api/uploads/**",
+        pathname: "/backend/uploads/**", // Match any path under this
       },
     ],
-    domains: ["localhost"], // keep your localhost support
+    // domains: ["localhost"], // This can be kept for localhost support if needed
   },
 };
 
