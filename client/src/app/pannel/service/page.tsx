@@ -32,16 +32,33 @@ export default function Service() {
   };
 
   const handleAddClick = () => setShowForm(true);
-  const handleCloseClick = () => setShowForm(false);
+  const handleCloseClick = () => {
+    setShowForm(false);
+    setTitle(""); // reset title
+    setDescription(""); // reset description
+    setEditMode(false); // exit edit mode if any
+    setEditingId(null); // clear editing ID
+  };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     try {
-      const res = await apiClient("/services", {
-        method: "POST",
-        body: JSON.stringify({ title, description }),
-      });
+      let res;
+
+      if (editMode && editingId) {
+        // EDIT existing service
+        res = await apiClient(`/services/${editingId}`, {
+          method: "PUT", // assuming your API uses PUT for update
+          body: JSON.stringify({ title, description }),
+        });
+      } else {
+        // ADD new service
+        res = await apiClient("/services", {
+          method: "POST",
+          body: JSON.stringify({ title, description }),
+        });
+      }
 
       if (res.success) {
         setTitle("");

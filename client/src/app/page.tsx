@@ -53,7 +53,6 @@ export default function Home() {
     return () => clearInterval(interval);
   }, []);
 
-
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
@@ -182,9 +181,15 @@ export default function Home() {
                 comfort, safety, and satisfaction.
               </p>
               <div className="flex md:justify-start justify-center">
-                <button className="bg-[#E68120] text-[#fff] md:text-lg text-sm font-medium md:my-8 mt-4 md:py-4 py-2 md:max-w-[300px] max-w-[200px] px-4 rounded-2xl">
-                  Request for Appointment
-                </button>
+                <a
+                  href="https://api.whatsapp.com/send/?phone=918921124851&text&type=phone_number&app_absent=0"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <button className="bg-[#E68120] text-[#fff] md:text-lg text-sm font-medium md:my-8 mt-4 md:py-4 py-2 md:max-w-[300px] max-w-[200px] px-4 rounded-2xl">
+                    Request for Appointment
+                  </button>
+                </a>
               </div>
             </div>
             <div className="w-full max-w-[700px] " data-aos="fade-up">

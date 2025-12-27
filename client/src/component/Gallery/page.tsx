@@ -30,7 +30,7 @@ function GallerySection() {
           </h1>
         </div>
         <div className="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-2 justify-items-center ">
-          {galleryImages.map((item, index) => (
+          {galleryImages.slice(0, 6).map((item, index) => (
             <div
               key={item._id || index}
               className="lg:w-[450px] w-[350px] lg:h-[390px] h-[290px] overflow-hidden"
